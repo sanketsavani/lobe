@@ -19,7 +19,7 @@ export function AreaCard({ areaId, openCount = 0, dueTodayCount = 0, urgentCount
       style={{ borderTopColor: `var(${colorVar})` }}
     >
       <div className="mb-2 flex items-center justify-between">
-        <h3 className="text-base font-semibold text-[var(--text-primary)]">
+        <h3 className="text-sm font-medium text-[var(--text-primary)]">
           {area.label}
         </h3>
         {urgentCount > 0 && (

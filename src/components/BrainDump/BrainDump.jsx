@@ -8,6 +8,7 @@ import { EmptyState } from '../shared/EmptyState'
 
 export default function BrainDump() {
   const [input, setInput] = useState('')
+  const [showInfo, setShowInfo] = useState(true)
   const inbox = useTaskStore((s) => s.inbox)
   const addInboxItem = useTaskStore((s) => s.addInboxItem)
 
@@ -29,6 +30,24 @@ export default function BrainDump() {
 
   return (
     <div className="mx-auto max-w-2xl p-4 md:p-6 lg:p-8">
+      {showInfo && (
+        <div className="mb-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-elevated)] px-4 py-3 text-xs text-[var(--text-secondary)]">
+          <div className="flex items-start justify-between gap-3">
+            <p>
+              <span className="font-medium text-[var(--text-primary)]">Brain Dump is for tasks.</span>{' '}
+              Use this space to quickly capture tasks and actionable items you want to do later, not as a general
+              journal.
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowInfo(false)}
+              className="shrink-0 rounded-md px-2 py-1 text-[10px] font-medium text-[var(--text-muted)] hover:bg-[var(--bg-muted)]"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
       <header className="mb-6">
         <h1 className="text-xl font-semibold text-[var(--text-primary)]">
           Brain Dump
