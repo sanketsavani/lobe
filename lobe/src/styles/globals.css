@@ -1,0 +1,105 @@
+/* LOBES: Design system — dark mode first, 8pt grid, area accent tokens */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Backgrounds — deep neutral */
+  --bg-base: #0a0a0a;
+  --bg-surface: #0f0f13;
+  --bg-elevated: #16161c;
+  --bg-hover: #1c1c24;
+
+  /* Borders — 1px, low opacity */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  /* Text */
+  --text-primary: #f0f0f5;
+  --text-secondary: #8888a0;
+  --text-muted: #44445a;
+
+  /* Area accent colors — 4 distinct, used for badges, left-borders, charts */
+  --area-startup1: #6366f1;
+  --area-startup2: #f59e0b;
+  --area-job: #10b981;
+  --area-personal: #ec4899;
+
+  /* Priority — left-border on cards only */
+  --priority-urgent: #ef4444;
+  --priority-high: #f97316;
+  --priority-medium: #eab308;
+  --priority-low: #22c55e;
+
+  /* Semantic */
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --danger: #ef4444;
+  --success: #22c55e;
+
+  /* Typography — Geist preferred; fallback DM Sans */
+  --font-ui: 'Geist', 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'DM Mono', ui-monospace, monospace;
+
+  /* Scale */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+
+  /* 8pt grid */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-2xl: 32px;
+  --space-3xl: 48px;
+
+  /* Component */
+  --card-radius: 8px;
+  --card-border: 1px solid var(--border-subtle);
+  --priority-border-width: 3px;
+}
+
+/* Optional: load Geist from npm or CDN if you add it later */
+/* For now we rely on DM Sans + DM Mono as in spec */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* Skeleton shimmer */
+@keyframes lobes-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.lobes-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    var(--bg-hover) 50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: lobes-shimmer 1.2s ease-in-out infinite;
+  border-radius: 4px;
+}

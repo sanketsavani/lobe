@@ -1,0 +1,16 @@
+# Lobes — Design system & rules
+
+- **Dark mode first.** Background: `#0a0a0a` / `#0f0f13`. Dense but breathable layout.
+- **Typography:** Geist or DM Sans for UI, Geist Mono (or DM Mono) for numbers/dates/badges.
+- **Colors:** 4 area accent tokens (`--area-startup1`, `--area-startup2`, `--area-job`, `--area-personal`). Use consistently for cards, badges, borders, charts.
+- **Components:** Flat cards, 1px subtle border (low opacity), no heavy shadows. Priority = colored left-border on cards only.
+- **Spacing:** 8pt grid (4, 8, 12, 16, 24, 32, 48px).
+- **Motion:** Framer Motion. Subtle spring (stiffness 300, damping 30). No bouncy animations.
+- **Icons:** Lucide React only. No emoji in UI chrome.
+- **Tables:** TanStack Table. Sticky headers, row hover, dense 36px rows.
+- **Drag and drop:** @dnd-kit/core. Smooth overlay, ghost while dragging.
+- **Empty states:** Always icon + one-liner. Never blank.
+- **Loading:** Skeleton loaders only. No spinners.
+- **Mobile nav:** Bottom tab bar, 5 items (Dashboard, Projects, Urgency, Brain Dump, Settings). Icon + label. Active = area accent color.
+
+Tech: Vite, React 18, Zustand (persist → localStorage), React Router v6, @dnd-kit, TanStack Table, Framer Motion, date-fns, Recharts, Lucide, clsx + tailwind-merge.

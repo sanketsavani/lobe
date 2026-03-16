@@ -1,0 +1,157 @@
+// LOBES: App shell — router, layout, Quick Add, Task Drawer
+
+import { Routes, Route, useLocation, Outlet } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useBreakpoint } from './hooks/useBreakpoint'
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
+import { useApiSync } from './hooks/useApiSync'
+import { useUIStore } from './store/useUIStore'
+import { useTaskStore } from './store/useTaskStore'
+import { api } from './api/client'
+import { Sidebar } from './components/shared/Sidebar'
+import { BottomNav } from './components/shared/BottomNav'
+import { TopBar } from './components/shared/TopBar'
+import { QuickAdd } from './components/shared/QuickAdd'
+import { TaskDrawer } from './components/shared/TaskDrawer'
+import Dashboard from './components/Dashboard/Dashboard'
+import ProjectView from './components/ProjectView/ProjectView'
+import UrgencyBoard from './components/UrgencyBoard/UrgencyBoard'
+import BrainDump from './components/BrainDump/BrainDump'
+import Settings from './components/Settings/Settings'
+
+const pageVariants = {
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.2, ease: 'easeOut' } },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.15 } },
+}
+
+function Layout() {
+  const { isMobile, isTablet } = useBreakpoint()
+  const location = useLocation()
+  const quickAddOpen = useUIStore((s) => s.quickAddOpen)
+  const setQuickAddOpen = useUIStore((s) => s.toggleQuickAdd)
+  const taskDrawerOpen = useUIStore((s) => s.taskDrawerOpen)
+  const taskDrawerTask = useUIStore((s) => s.taskDrawerTask)
+  const closeTaskDrawer = useUIStore((s) => s.closeTaskDrawer)
+  const openTaskDrawer = useUIStore((s) => s.openTaskDrawer)
+  const openSearch = useUIStore((s) => s.openSearch)
+  const addTask = useTaskStore((s) => s.addTask)
+  const updateTask = useTaskStore((s) => s.updateTask)
+
+  useApiSync()
+  useKeyboardShortcuts({
+    onQuickAdd: () => setQuickAddOpen(),
+    onSearch: openSearch,
+  })
+
+  const handleQuickAddSave = async (payload) => {
+    if (api.isConfigured()) {
+      try {
+        const created = await api.createTask(payload)
+        addTask(created)
+      } catch (e) {
+        console.error(e)
+        addTask(payload)
+      }
+    } else {
+      addTask(payload)
+    }
+  }
+
+  const handleTaskDrawerSave = async (payload) => {
+    if (taskDrawerTask?.id) {
+      const merged = { ...taskDrawerTask, ...payload }
+      if (api.isConfigured()) {
+        try {
+          const updated = await api.updateTask(taskDrawerTask.id, merged)
+          updateTask(taskDrawerTask.id, updated)
+        } catch (e) {
+          console.error(e)
+          updateTask(taskDrawerTask.id, merged)
+        }
+      } else {
+        updateTask(taskDrawerTask.id, merged)
+      }
+    } else {
+      if (api.isConfigured()) {
+        try {
+          const created = await api.createTask(payload)
+          addTask(created)
+        } catch (e) {
+          console.error(e)
+          addTask(payload)
+        }
+      } else {
+        addTask(payload)
+      }
+    }
+  }
+
+  const pageTitle =
+    location.pathname === '/'
+      ? 'Dashboard'
+      : location.pathname.startsWith('/projects')
+        ? 'Projects'
+        : location.pathname === '/urgency'
+          ? 'Urgency'
+          : location.pathname === '/brain-dump'
+            ? 'Brain Dump'
+            : location.pathname === '/settings'
+              ? 'Settings'
+              : 'Lobes'
+
+  return (
+    <div className="flex min-h-screen bg-[var(--bg-base)]">
+      {!isMobile && <Sidebar collapsed={isTablet} />}
+      <div className="flex flex-1 flex-col pb-16 md:pb-0">
+        <TopBar
+          title={isMobile ? pageTitle : null}
+          onSearchClick={openSearch}
+          onQuickAddClick={() => setQuickAddOpen()}
+        />
+        <main className="flex-1">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="min-h-full"
+            >
+              <Outlet context={{ openTaskDrawer }} />
+            </motion.div>
+          </AnimatePresence>
+        </main>
+      </div>
+      {isMobile && <BottomNav />}
+
+      <QuickAdd
+        open={quickAddOpen}
+        onOpenChange={(open) => useUIStore.setState({ quickAddOpen: open })}
+        onSave={handleQuickAddSave}
+      />
+      <TaskDrawer
+        open={taskDrawerOpen}
+        task={taskDrawerTask}
+        onClose={closeTaskDrawer}
+        onSave={handleTaskDrawerSave}
+      />
+    </div>
+  )
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/projects" element={<ProjectView />} />
+        <Route path="/projects/:areaId" element={<ProjectView />} />
+        <Route path="/urgency" element={<UrgencyBoard />} />
+        <Route path="/brain-dump" element={<BrainDump />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+    </Routes>
+  )
+}
