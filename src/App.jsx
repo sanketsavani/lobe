@@ -8,6 +8,7 @@ import { useApiSync } from './hooks/useApiSync'
 import { useUIStore } from './store/useUIStore'
 import { useTaskStore } from './store/useTaskStore'
 import { useSettingsStore } from './store/useSettingsStore'
+import { useAuthStore } from './store/useAuthStore'
 import { api } from './api/client'
 import { Sidebar } from './components/shared/Sidebar'
 import { BottomNav } from './components/shared/BottomNav'
@@ -40,6 +41,7 @@ function Layout() {
   const addTask = useTaskStore((s) => s.addTask)
   const updateTask = useTaskStore((s) => s.updateTask)
   const reducedMotion = useSettingsStore((s) => s.reducedMotion)
+  const user = useAuthStore((s) => s.user)
 
   useApiSync()
   useKeyboardShortcuts({
@@ -102,6 +104,14 @@ function Layout() {
             : location.pathname === '/settings'
               ? 'Settings'
               : 'Lobes'
+
+  if (!user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[var(--bg-base)]">
+        <AuthForm mode="login" />
+      </div>
+    )
+  }
 
   return (
     <div className="flex min-h-screen bg-[var(--bg-base)]">
