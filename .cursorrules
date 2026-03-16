@@ -14,3 +14,39 @@
 - **Mobile nav:** Bottom tab bar, 5 items (Dashboard, Projects, Urgency, Brain Dump, Settings). Icon + label. Active = area accent color.
 
 Tech: Vite, React 18, Zustand (persist → localStorage), React Router v6, @dnd-kit, TanStack Table, Framer Motion, date-fns, Recharts, Lucide, clsx + tailwind-merge.
+
+
+
+/* MODERN UI LAYER */
+
+- Command palette: Cmd+K opens a full spotlight-style command palette — not just search, but actions too ("Add task to Startup 1", "Switch to Urgency Board", "Toggle Focus Mode"). Think Linear's command menu.
+
+- Contextual right-click menus: Right-clicking any task card opens a sleek context menu with quick actions — no need to open the full drawer for simple things.
+
+- Micro-feedback on every action: Task marked done → subtle checkmark burst animation. Task deleted → card slides out with a soft fade. Priority changed → left border color transitions smoothly, not a hard swap.
+
+- Toasts not alerts: Every action (created, deleted, moved) shows a bottom-right toast with an undo button. 3 second auto-dismiss. Never use browser alert() or confirm().
+
+- Drag ghost preview: While dragging a task card, show a semi-transparent "ghost" of where it will land — not just a placeholder box.
+
+- Collapsible sidebar with memory: Sidebar remembers its collapsed/expanded state in localStorage. Smooth width transition (220px → 56px), icons only when collapsed with tooltips on hover.
+
+- Smooth view transitions: Switching between Dashboard / Kanban / Table / Urgency Board uses a shared layout animation (Framer Motion layoutId) so it feels like one continuous surface, not page reloads.
+
+- Area color bleeds: When inside a specific area (e.g. Startup 1), the sidebar active item, top bar accent, and scrollbar thumb all subtly shift to that area's color. The whole UI "tunes" to the area you're in.
+
+- Focus mode dimming: When Focus Mode is on for one area, the other 3 area cards on dashboard visually dim to 30% opacity — not hidden, just de-emphasized.
+
+- Overdue pulse: Tasks that are overdue get a slow red pulse on their due date text — not aggressive, just a subtle breathing animation to catch the eye.
+
+- Swipe gestures on mobile: Swipe a task card right to mark done (green flash), swipe left to reveal delete + priority actions. Standard mobile pattern, feels native.
+
+- Resize-aware Kanban: On window resize, Kanban columns reflow gracefully. No horizontal overflow on tablet — columns compress before they scroll.
+
+- Sticky "Today" marker in lists: When viewing tasks sorted by date, today's date is a sticky floating chip that stays visible as you scroll through past and future tasks.
+
+- Subtle noise texture on backgrounds: Add a very low opacity SVG noise texture (2–3% opacity) to --bg-base. Makes the dark background feel tactile and premium instead of flat black.
+
+- Number animations: All counts (task counts, streak numbers, progress %) animate with a fast odometer-style count-up when the dashboard loads or updates. Use Framer Motion's useMotionValue + animate.
+
+- Proportional progress rings: Area cards on dashboard show a thin circular progress ring (SVG) around the area icon instead of a flat bar — more compact, more visual.

@@ -7,6 +7,7 @@ import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useApiSync } from './hooks/useApiSync'
 import { useUIStore } from './store/useUIStore'
 import { useTaskStore } from './store/useTaskStore'
+import { useSettingsStore } from './store/useSettingsStore'
 import { api } from './api/client'
 import { Sidebar } from './components/shared/Sidebar'
 import { BottomNav } from './components/shared/BottomNav'
@@ -18,6 +19,7 @@ import ProjectView from './components/ProjectView/ProjectView'
 import UrgencyBoard from './components/UrgencyBoard/UrgencyBoard'
 import BrainDump from './components/BrainDump/BrainDump'
 import Settings from './components/Settings/Settings'
+import { AuthForm } from './components/Auth/AuthForm'
 
 const pageVariants = {
   initial: { opacity: 0, y: 8 },
@@ -37,6 +39,7 @@ function Layout() {
   const openSearch = useUIStore((s) => s.openSearch)
   const addTask = useTaskStore((s) => s.addTask)
   const updateTask = useTaskStore((s) => s.updateTask)
+  const reducedMotion = useSettingsStore((s) => s.reducedMotion)
 
   useApiSync()
   useKeyboardShortcuts({
@@ -110,18 +113,24 @@ function Layout() {
           onQuickAddClick={() => setQuickAddOpen()}
         />
         <main className="flex-1">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={location.pathname}
-              variants={pageVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              className="min-h-full"
-            >
+          {reducedMotion ? (
+            <div className="min-h-full">
               <Outlet context={{ openTaskDrawer }} />
-            </motion.div>
-          </AnimatePresence>
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={location.pathname}
+                variants={pageVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                className="min-h-full"
+              >
+                <Outlet context={{ openTaskDrawer }} />
+              </motion.div>
+            </AnimatePresence>
+          )}
         </main>
       </div>
       {isMobile && <BottomNav />}
@@ -144,6 +153,8 @@ function Layout() {
 export default function App() {
   return (
     <Routes>
+      <Route path="/login" element={<AuthForm mode="login" />} />
+      <Route path="/signup" element={<AuthForm mode="signup" />} />
       <Route element={<Layout />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="/projects" element={<ProjectView />} />

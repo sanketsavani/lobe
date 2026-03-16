@@ -1,7 +1,8 @@
 // LOBES: TaskForm — title, area, status, priority, due date, notes, importance
 
 import { useState } from 'react'
-import { AREAS } from '../../data/areas'
+import { BASE_AREAS } from '../../data/areas'
+import { useSettingsStore } from '../../store/useSettingsStore'
 import { cn } from '../../utils/cn'
 
 const STATUSES = [
@@ -34,6 +35,9 @@ const defaultTask = {
 }
 
 export function TaskForm({ task = null, onSubmit, onCancel, compact = false }) {
+  const enabledAreas = useSettingsStore((s) => s.enabledAreas)
+  const customAreas = useSettingsStore((s) => s.customAreas)
+  const allAreas = [...BASE_AREAS, ...customAreas].filter((a) => enabledAreas.includes(a.id))
   const [form, setForm] = useState(() => {
     if (task) {
       return {
@@ -79,7 +83,7 @@ export function TaskForm({ task = null, onSubmit, onCancel, compact = false }) {
             onChange={(e) => setForm((f) => ({ ...f, area: e.target.value }))}
             className={cn(inputClass, 'cursor-pointer')}
           >
-            {AREAS.map((a) => (
+            {allAreas.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.label}
               </option>
@@ -147,7 +151,7 @@ export function TaskForm({ task = null, onSubmit, onCancel, compact = false }) {
             onChange={(e) => setForm((f) => ({ ...f, area: e.target.value }))}
             className={cn(inputClass, 'cursor-pointer')}
           >
-            {AREAS.map((a) => (
+            {allAreas.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.label}
               </option>

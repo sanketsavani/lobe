@@ -43,6 +43,12 @@ function del(url) {
 export const api = {
   isConfigured: () => !!BASE,
 
+  signup: ({ username, email, password }) =>
+    post('/api/signup', { username, email, password }),
+
+  login: ({ usernameOrEmail, password }) =>
+    post('/api/login', { usernameOrEmail, password }),
+
   getTasks: () => get('/api/tasks').then((d) => d.tasks || []),
   getTask: (id) => get(`/api/tasks/${id}`),
   createTask: (task) => post('/api/tasks', task).then((t) => (t && t.id ? t : (Array.isArray(t) ? t[0] : t))),

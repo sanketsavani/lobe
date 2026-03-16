@@ -1,13 +1,13 @@
 // LOBES: Area card — top border = area accent, open tasks, due today, progress, sparkline
 
 import { AreaBadge } from '../shared/AreaBadge'
-import { AREAS } from '../../data/areas'
+import { BASE_AREAS } from '../../data/areas'
 import { getTasksByArea, getTasksDueToday, getUrgentTasks } from '../../utils/taskUtils'
 import { useTaskStore } from '../../store/useTaskStore'
 import { cn } from '../../utils/cn'
 
 export function AreaCard({ areaId, openCount = 0, dueTodayCount = 0, urgentCount = 0 }) {
-  const area = AREAS.find((a) => a.id === areaId)
+  const area = BASE_AREAS.find((a) => a.id === areaId) || { id: areaId, label: areaId, colorVar: '--area-startup1' }
   if (!area) return null
   const colorVar = area.colorVar
   return (

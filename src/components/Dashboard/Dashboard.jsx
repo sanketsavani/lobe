@@ -2,7 +2,8 @@
 
 import { useOutletContext } from 'react-router-dom'
 import { useTaskStore } from '../../store/useTaskStore'
-import { AREAS } from '../../data/areas'
+import { BASE_AREAS } from '../../data/areas'
+import { useSettingsStore } from '../../store/useSettingsStore'
 import { getTasksByArea, getTasksDueToday, getUrgentTasks } from '../../utils/taskUtils'
 import { AreaCard } from './AreaCard'
 import { EmptyState } from '../shared/EmptyState'
@@ -10,6 +11,7 @@ import { EmptyState } from '../shared/EmptyState'
 export default function Dashboard() {
   const { openTaskDrawer } = useOutletContext()
   const tasks = useTaskStore((s) => s.tasks)
+  const enabledAreas = useSettingsStore((s) => s.enabledAreas)
   const openTasks = tasks.filter((t) => t.status !== 'done')
   const dueToday = getTasksDueToday(openTasks)
   const urgent = getUrgentTasks(openTasks)
@@ -26,7 +28,9 @@ export default function Dashboard() {
       </header>
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {AREAS.map((area) => {
+        {[...BASE_AREAS, ...useSettingsStore.getState().customAreas]
+          .filter((a) => enabledAreas.includes(a.id))
+          .map((area) => {
           const areaTasks = getTasksByArea(openTasks, area.id)
           const dueTodayCount = getTasksDueToday(areaTasks).length
           const urgentCount = getUrgentTasks(areaTasks).length

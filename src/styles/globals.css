@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 :root {
-  /* Backgrounds — deep neutral */
+  /* Backgrounds — deep neutral (dark) */
   --bg-base: #0a0a0a;
   --bg-surface: #0f0f13;
   --bg-elevated: #16161c;
@@ -42,7 +42,7 @@
   --font-ui: 'Geist', 'DM Sans', system-ui, sans-serif;
   --font-mono: 'Geist Mono', 'DM Mono', ui-monospace, monospace;
 
-  /* Scale */
+  /* Scale (base tokens, modulated by font-scale) */
   --text-xs: 11px;
   --text-sm: 13px;
   --text-base: 14px;
@@ -86,6 +86,70 @@ body {
   min-height: 100vh;
 }
 
+/* Light theme overrides */
+[data-theme='light'] {
+  --bg-base: #f5f5f9;
+  --bg-surface: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-hover: #f3f4ff;
+
+  --border-subtle: rgba(15, 23, 42, 0.06);
+  --border-default: rgba(15, 23, 42, 0.12);
+  --border-strong: rgba(15, 23, 42, 0.18);
+
+  --text-primary: #020617;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+
+  --priority-urgent: #b91c1c;
+  --priority-high: #c2410c;
+  --priority-medium: #a16207;
+  --priority-low: #15803d;
+}
+
+/* Font size scale — overrides typography tokens and Tailwind classes */
+body[data-font-scale='compact'] {
+  --text-xs: 10px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-md: 14px;
+  --text-lg: 16px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+}
+
+body[data-font-scale='relaxed'] {
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 15px;
+  --text-md: 16px;
+  --text-lg: 19px;
+  --text-xl: 23px;
+  --text-2xl: 30px;
+}
+
+.text-xs {
+  font-size: var(--text-xs);
+}
+.text-sm {
+  font-size: var(--text-sm);
+}
+.text-base {
+  font-size: var(--text-base);
+}
+.text-md {
+  font-size: var(--text-md);
+}
+.text-lg {
+  font-size: var(--text-lg);
+}
+.text-xl {
+  font-size: var(--text-xl);
+}
+.text-2xl {
+  font-size: var(--text-2xl);
+}
+
 /* Skeleton shimmer */
 @keyframes lobes-shimmer {
   0% { background-position: -200% 0; }
@@ -102,4 +166,18 @@ body {
   background-size: 200% 100%;
   animation: lobes-shimmer 1.2s ease-in-out infinite;
   border-radius: 4px;
+}
+
+/* Subtle noise overlay for bg-base */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  z-index: -1;
+}
+
+body[data-noise='off']::before {
+  display: none;
 }

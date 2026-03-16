@@ -2,7 +2,8 @@
 
 import { useParams, NavLink, useOutletContext } from 'react-router-dom'
 import { Plus } from 'lucide-react'
-import { AREAS } from '../../data/areas'
+import { BASE_AREAS } from '../../data/areas'
+import { useSettingsStore } from '../../store/useSettingsStore'
 import { useTaskStore } from '../../store/useTaskStore'
 import { getTasksByArea } from '../../utils/taskUtils'
 import { EmptyState } from '../shared/EmptyState'
@@ -12,7 +13,12 @@ import { cn } from '../../utils/cn'
 export default function ProjectView() {
   const { openTaskDrawer } = useOutletContext()
   const { areaId } = useParams()
-  const currentAreaId = areaId || AREAS[0].id
+  const enabledAreas = useSettingsStore((s) => s.enabledAreas)
+  const customAreas = useSettingsStore((s) => s.customAreas)
+  const allAreas = [...BASE_AREAS, ...customAreas]
+  const visibleAreas = allAreas.filter((a) => enabledAreas.includes(a.id))
+  const fallbackAreaId = visibleAreas[0]?.id || allAreas[0]?.id || 'startup1'
+  const currentAreaId = areaId || fallbackAreaId
   const tasks = useTaskStore((s) => s.tasks)
   const areaTasks = getTasksByArea(tasks, currentAreaId)
 
@@ -23,10 +29,10 @@ export default function ProjectView() {
           Projects
         </h1>
         <nav className="mt-3 flex gap-1 overflow-x-auto pb-1">
-          {AREAS.map((a) => (
+          {visibleAreas.map((a, index) => (
             <NavLink
               key={a.id}
-              to={a.id === AREAS[0].id ? '/projects' : `/projects/${a.id}`}
+              to={index === 0 ? '/projects' : `/projects/${a.id}`}
               className={({ isActive }) =>
                 cn(
                   'rounded-md px-3 py-1.5 text-sm font-medium transition-colors',
