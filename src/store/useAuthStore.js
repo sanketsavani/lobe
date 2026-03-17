@@ -10,7 +10,10 @@ export const useAuthStore = create(
       status: 'idle',
       error: null,
 
-      logout: () => set({ user: null, token: null, status: 'idle', error: null }),
+      logout: () => {
+        api.clearAuthToken()
+        set({ user: null, token: null, status: 'idle', error: null })
+      },
 
       signup: async ({ username, email, password }) => {
         set({ status: 'loading', error: null })

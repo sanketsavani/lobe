@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useBreakpoint } from './hooks/useBreakpoint'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import { useApiSync } from './hooks/useApiSync'
+import { useSettingsSync } from './hooks/useSettingsSync'
 import { useUIStore } from './store/useUIStore'
 import { useTaskStore } from './store/useTaskStore'
 import { useSettingsStore } from './store/useSettingsStore'
@@ -44,6 +45,7 @@ function Layout() {
   const user = useAuthStore((s) => s.user)
 
   useApiSync()
+  useSettingsSync()
   useKeyboardShortcuts({
     onQuickAdd: () => setQuickAddOpen(),
     onSearch: openSearch,
