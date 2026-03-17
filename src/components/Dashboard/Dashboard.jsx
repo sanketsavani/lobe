@@ -4,7 +4,7 @@ import { useOutletContext } from 'react-router-dom'
 import { useTaskStore } from '../../store/useTaskStore'
 import { BASE_AREAS } from '../../data/areas'
 import { useSettingsStore } from '../../store/useSettingsStore'
-import { getTasksByArea, getTasksDueToday, getUrgentTasks } from '../../utils/taskUtils'
+import { getTasksByArea, getTasksDueToday, getUrgentTasks, getDoneCountByArea } from '../../utils/taskUtils'
 import { AreaCard } from './AreaCard'
 import { EmptyState } from '../shared/EmptyState'
 
@@ -13,6 +13,7 @@ export default function Dashboard() {
   const tasks = useTaskStore((s) => s.tasks)
   const enabledAreas = useSettingsStore((s) => s.enabledAreas)
   const openTasks = tasks.filter((t) => t.status !== 'done')
+  const doneTasks = tasks.filter((t) => t.status === 'done')
   const dueToday = getTasksDueToday(openTasks)
   const urgent = getUrgentTasks(openTasks)
 
@@ -23,7 +24,7 @@ export default function Dashboard() {
           Dashboard
         </h1>
         <p className="text-sm text-[var(--text-secondary)]">
-          Overview across all areas
+          {openTasks.length} open · {doneTasks.length} done — overview across all areas
         </p>
       </header>
 
@@ -34,6 +35,7 @@ export default function Dashboard() {
           const areaTasks = getTasksByArea(openTasks, area.id)
           const dueTodayCount = getTasksDueToday(areaTasks).length
           const urgentCount = getUrgentTasks(areaTasks).length
+          const doneCount = getDoneCountByArea(tasks, area.id)
           return (
             <AreaCard
               key={area.id}
@@ -41,6 +43,7 @@ export default function Dashboard() {
               openCount={areaTasks.length}
               dueTodayCount={dueTodayCount}
               urgentCount={urgentCount}
+              doneCount={doneCount}
             />
           )
         })}

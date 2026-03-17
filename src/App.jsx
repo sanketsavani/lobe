@@ -65,6 +65,22 @@ function Layout() {
     }
   }
 
+  const handleTaskStatusToggle = async (task) => {
+    const nextStatus = task.status === 'done' ? 'todo' : 'done'
+    const updates = { ...task, status: nextStatus }
+    if (api.isConfigured()) {
+      try {
+        const updated = await api.updateTask(task.id, updates)
+        updateTask(task.id, updated)
+      } catch (e) {
+        console.error(e)
+        updateTask(task.id, updates)
+      }
+    } else {
+      updateTask(task.id, { status: nextStatus })
+    }
+  }
+
   const handleTaskDrawerSave = async (payload) => {
     if (taskDrawerTask?.id) {
       const merged = { ...taskDrawerTask, ...payload }
@@ -127,7 +143,7 @@ function Layout() {
         <main className="flex-1">
           {reducedMotion ? (
             <div className="min-h-full">
-              <Outlet context={{ openTaskDrawer }} />
+              <Outlet context={{ openTaskDrawer, onTaskStatusToggle: handleTaskStatusToggle }} />
             </div>
           ) : (
             <AnimatePresence mode="wait">
@@ -139,7 +155,7 @@ function Layout() {
                 exit="exit"
                 className="min-h-full"
               >
-                <Outlet context={{ openTaskDrawer }} />
+                <Outlet context={{ openTaskDrawer, onTaskStatusToggle: handleTaskStatusToggle }} />
               </motion.div>
             </AnimatePresence>
           )}

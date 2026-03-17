@@ -23,3 +23,7 @@ export const getUrgentTasks = (tasks) =>
 
 export const getTasksByStatus = (tasks, status) =>
   tasks.filter((t) => t.status === status)
+
+/** Done count for a given area (from full task list). */
+export const getDoneCountByArea = (tasks, areaId) =>
+  tasks.filter((t) => t.area === areaId && t.status === 'done').length

@@ -6,7 +6,7 @@ import { getTasksByArea, getTasksDueToday, getUrgentTasks } from '../../utils/ta
 import { useTaskStore } from '../../store/useTaskStore'
 import { cn } from '../../utils/cn'
 
-export function AreaCard({ areaId, openCount = 0, dueTodayCount = 0, urgentCount = 0 }) {
+export function AreaCard({ areaId, openCount = 0, dueTodayCount = 0, urgentCount = 0, doneCount = 0 }) {
   const area = BASE_AREAS.find((a) => a.id === areaId) || { id: areaId, label: areaId, colorVar: '--area-startup1' }
   if (!area) return null
   const colorVar = area.colorVar
@@ -32,7 +32,7 @@ export function AreaCard({ areaId, openCount = 0, dueTodayCount = 0, urgentCount
         )}
       </div>
       <p className="mb-3 text-xs text-[var(--text-secondary)]">
-        {openCount} open · {dueTodayCount} due today
+        {openCount} open · {dueTodayCount} due today{doneCount > 0 ? ` · ${doneCount} done` : ''}
       </p>
       <div
         className="h-1 w-full rounded-full bg-[var(--bg-elevated)]"
