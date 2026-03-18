@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useSettingsStore } from '../../store/useSettingsStore'
 import { BASE_AREAS } from '../../data/areas'
+import { TabInfoBanner } from '../shared/TabInfoBanner'
 
 export default function Settings() {
   const enabledAreas = useSettingsStore((s) => s.enabledAreas)
@@ -36,6 +37,9 @@ export default function Settings() {
 
   return (
     <div className="mx-auto max-w-2xl p-4 md:p-6 lg:p-8">
+      <TabInfoBanner tabId="settings" title="Settings is for customization.">
+        Change the look & feel, choose which areas you use, and tune how Lobes behaves.
+      </TabInfoBanner>
       <header className="mb-6">
         <h1 className="text-xl font-semibold text-[var(--text-primary)]">
           Settings

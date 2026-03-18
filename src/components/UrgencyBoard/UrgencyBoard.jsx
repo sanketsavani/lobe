@@ -2,6 +2,7 @@
 
 import { useTaskStore } from '../../store/useTaskStore'
 import { EmptyState } from '../shared/EmptyState'
+import { TabInfoBanner } from '../shared/TabInfoBanner'
 
 export default function UrgencyBoard() {
   const tasks = useTaskStore((s) => s.tasks)
@@ -9,6 +10,9 @@ export default function UrgencyBoard() {
 
   return (
     <div className="mx-auto max-w-6xl p-4 md:p-6 lg:p-8">
+      <TabInfoBanner tabId="urgency" title="Urgency helps you prioritize.">
+        Use the Eisenhower matrix to decide what to do now, what to schedule, what to delegate, and what to drop.
+      </TabInfoBanner>
       <header className="mb-6">
         <h1 className="text-xl font-semibold text-[var(--text-primary)]">
           Urgency

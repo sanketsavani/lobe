@@ -10,6 +10,7 @@ import { getTasksByArea } from '../../utils/taskUtils'
 import { EmptyState } from '../shared/EmptyState'
 import { TaskCard } from './TaskCard'
 import { cn } from '../../utils/cn'
+import { TabInfoBanner } from '../shared/TabInfoBanner'
 
 const FILTER_OPTIONS = [
   { id: 'all', label: 'All' },
@@ -38,6 +39,9 @@ export default function ProjectView() {
 
   return (
     <div className="mx-auto max-w-6xl p-4 md:p-6 lg:p-8">
+      <TabInfoBanner tabId="projects" title="Projects is where you manage tasks.">
+        Pick an area, add tasks, and keep them moving from open → done. This is your “workbench” for projects.
+      </TabInfoBanner>
       <header className="mb-6">
         <h1 className="text-xl font-semibold text-[var(--text-primary)]">
           Projects

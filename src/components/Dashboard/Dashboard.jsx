@@ -7,6 +7,7 @@ import { useSettingsStore } from '../../store/useSettingsStore'
 import { getTasksByArea, getTasksDueToday, getUrgentTasks, getDoneCountByArea } from '../../utils/taskUtils'
 import { AreaCard } from './AreaCard'
 import { EmptyState } from '../shared/EmptyState'
+import { TabInfoBanner } from '../shared/TabInfoBanner'
 
 export default function Dashboard() {
   const { openTaskDrawer } = useOutletContext()
@@ -19,6 +20,9 @@ export default function Dashboard() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 p-4 md:p-6 lg:p-8">
+      <TabInfoBanner tabId="dashboard" title="Dashboard is your overview.">
+        See what’s open, due today, and “on fire” across all your areas so you know what to do next.
+      </TabInfoBanner>
       <header className="mb-6">
         <h1 className="text-xl font-semibold text-[var(--text-primary)]">
           Dashboard
