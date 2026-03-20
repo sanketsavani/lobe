@@ -1,7 +1,9 @@
 // LOBES: Settings — area names, themes, export/import, focus mode
 
 import { useState } from 'react'
+import { LogOut } from 'lucide-react'
 import { useSettingsStore } from '../../store/useSettingsStore'
+import { useAuthStore } from '../../store/useAuthStore'
 import { BASE_AREAS } from '../../data/areas'
 import { TabInfoBanner } from '../shared/TabInfoBanner'
 
@@ -23,6 +25,10 @@ export default function Settings() {
   const noiseTexture = useSettingsStore((s) => s.noiseTexture)
   const setNoiseTexture = useSettingsStore((s) => s.setNoiseTexture)
   const [newAreaName, setNewAreaName] = useState('')
+  const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
+  const accountLabel =
+    user?.username || user?.email || (user ? String(user.id || '') : null)
 
   const toggleArea = (id) => {
     if (enabledAreas.includes(id) && enabledAreas.length === 1) {
@@ -217,6 +223,24 @@ export default function Settings() {
               Add
             </button>
           </form>
+        </section>
+        <section className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
+          <h2 className="mb-3 text-sm font-medium text-[var(--text-primary)]">Account</h2>
+          {accountLabel ? (
+            <p className="mb-4 text-xs text-[var(--text-secondary)]">
+              Signed in as <span className="text-[var(--text-primary)]">{accountLabel}</span>
+            </p>
+          ) : (
+            <p className="mb-4 text-xs text-[var(--text-secondary)]">You&apos;re signed in.</p>
+          )}
+          <button
+            type="button"
+            onClick={logout}
+            className="inline-flex items-center gap-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-base)] px-3 py-2 text-sm font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--bg-hover)]"
+          >
+            <LogOut className="h-4 w-4" strokeWidth={1.75} />
+            Log out
+          </button>
         </section>
         <section className="rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-surface)] p-4">
           <h2 className="mb-3 text-sm font-medium text-[var(--text-primary)]">

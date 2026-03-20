@@ -43,6 +43,7 @@ function Layout() {
   const updateTask = useTaskStore((s) => s.updateTask)
   const reducedMotion = useSettingsStore((s) => s.reducedMotion)
   const user = useAuthStore((s) => s.user)
+  const logout = useAuthStore((s) => s.logout)
 
   useApiSync()
   useSettingsSync()
@@ -139,6 +140,7 @@ function Layout() {
           title={isMobile ? pageTitle : null}
           onSearchClick={openSearch}
           onQuickAddClick={() => setQuickAddOpen()}
+          onLogoutClick={isMobile ? logout : undefined}
         />
         <main className="flex-1">
           {reducedMotion ? (

@@ -1,9 +1,15 @@
 // LOBES: Top bar — search icon + Quick Add; title on mobile
 
-import { Search, Plus } from 'lucide-react'
+import { Search, Plus, LogOut } from 'lucide-react'
 import { cn } from '../../utils/cn'
 
-export function TopBar({ title, onSearchClick, onQuickAddClick, className }) {
+export function TopBar({
+  title,
+  onSearchClick,
+  onQuickAddClick,
+  onLogoutClick,
+  className,
+}) {
   return (
     <header
       className={cn(
@@ -17,6 +23,16 @@ export function TopBar({ title, onSearchClick, onQuickAddClick, className }) {
         </h1>
       )}
       <div className="ml-auto flex items-center gap-1">
+        {onLogoutClick && (
+          <button
+            type="button"
+            onClick={onLogoutClick}
+            className="rounded-md p-2 text-[var(--text-muted)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
+            aria-label="Log out"
+          >
+            <LogOut className="h-5 w-5" strokeWidth={1.5} />
+          </button>
+        )}
         <button
           type="button"
           onClick={onSearchClick}

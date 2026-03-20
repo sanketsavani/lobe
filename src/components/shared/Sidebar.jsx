@@ -50,18 +50,21 @@ export function Sidebar({ collapsed }) {
           </NavLink>
         ))}
       </nav>
-      {!collapsed && (
-        <div className="border-t border-[var(--border-subtle)] p-2">
-          <button
-            type="button"
-            onClick={logout}
-            className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm text-[var(--text-secondary)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]"
-          >
-            <LogOut className="h-5 w-5 shrink-0" strokeWidth={1.5} />
-            <span>Log out</span>
-          </button>
-        </div>
-      )}
+      <div className="border-t border-[var(--border-subtle)] p-2">
+        <button
+          type="button"
+          onClick={logout}
+          title="Log out"
+          aria-label="Log out"
+          className={cn(
+            'flex w-full items-center rounded-md px-3 py-2 text-sm text-[var(--text-secondary)] transition-colors duration-150 hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]',
+            collapsed ? 'justify-center' : 'gap-3'
+          )}
+        >
+          <LogOut className="h-5 w-5 shrink-0" strokeWidth={1.5} />
+          {!collapsed && <span>Log out</span>}
+        </button>
+      </div>
     </aside>
   )
 }
