@@ -4,10 +4,10 @@ import { useEffect, useRef } from 'react'
 import { api } from '../api/client'
 import { useAuthStore } from '../store/useAuthStore'
 import { useSettingsStore } from '../store/useSettingsStore'
-import { AREA_IDS, BASE_AREAS, setAllAreasForRuntime } from '../data/areas'
+import { BASE_AREAS, DEFAULT_ENABLED_AREA_IDS, setAllAreasForRuntime } from '../data/areas'
 
 const DEFAULTS = {
-  enabledAreas: AREA_IDS,
+  enabledAreas: DEFAULT_ENABLED_AREA_IDS,
   customAreas: [],
   theme: 'system',
   accentColor: '#6366f1',

@@ -1,13 +1,13 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { AREA_IDS, BASE_AREAS, setAllAreasForRuntime } from '../data/areas'
+import { AREA_IDS, BASE_AREAS, DEFAULT_ENABLED_AREA_IDS, setAllAreasForRuntime } from '../data/areas'
 
 const COLOR_VARS = ['--area-startup1', '--area-startup2', '--area-job', '--area-personal']
 
 export const useSettingsStore = create(
   persist(
     (set, get) => ({
-      enabledAreas: AREA_IDS,
+      enabledAreas: DEFAULT_ENABLED_AREA_IDS,
       customAreas: [],
       theme: 'system', // 'dark' | 'light' | 'system'
       accentColor: '#6366f1',

@@ -1,7 +1,7 @@
 // LOBES: TaskForm — title, area, status, priority, due date, notes, importance
 
 import { useState } from 'react'
-import { BASE_AREAS } from '../../data/areas'
+import { BASE_AREAS, DEFAULT_ENABLED_AREA_IDS } from '../../data/areas'
 import { useSettingsStore } from '../../store/useSettingsStore'
 import { cn } from '../../utils/cn'
 
@@ -26,7 +26,7 @@ const IMPORTANCE = [
 
 const defaultTask = {
   title: '',
-  area: 'startup1',
+  area: DEFAULT_ENABLED_AREA_IDS[0],
   status: 'todo',
   priority: 'medium',
   importance: 'important',

@@ -6,7 +6,7 @@ import { persist } from 'zustand/middleware'
 const taskSchema = {
   id: '',
   title: '',
-  area: 'startup1', // startup1 | startup2 | job | personal
+  area: 'personal', // personal | startup1 | job | startup2 (+ custom)
   status: 'backlog', // backlog | todo | inprogress | done
   priority: 'medium', // urgent | high | medium | low
   importance: 'important', // important | not_important (Eisenhower)

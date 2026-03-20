@@ -26,7 +26,7 @@ export default function ProjectView() {
   const customAreas = useSettingsStore((s) => s.customAreas)
   const allAreas = [...BASE_AREAS, ...customAreas]
   const visibleAreas = allAreas.filter((a) => enabledAreas.includes(a.id))
-  const fallbackAreaId = visibleAreas[0]?.id || allAreas[0]?.id || 'startup1'
+  const fallbackAreaId = visibleAreas[0]?.id || allAreas[0]?.id || 'personal'
   const currentAreaId = areaId || fallbackAreaId
   const tasks = useTaskStore((s) => s.tasks)
   const areaTasksAll = getTasksByArea(tasks, currentAreaId)
