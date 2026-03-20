@@ -1,4 +1,5 @@
 // LOBES: Brain Dump — capture + triage inbox
+import { useState } from 'react'
 import { Send } from 'lucide-react'
 import { useTaskStore } from '../../store/useTaskStore'
 import { api } from '../../api/client'
